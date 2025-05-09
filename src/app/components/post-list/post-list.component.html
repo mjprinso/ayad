@@ -1,0 +1,67 @@
+<div class="post-list-container">
+  <mat-toolbar color="primary mb-4">
+    <span>Blog Posts</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" routerLink="/posts/create">
+      <mat-icon>note_add</mat-icon>
+      New Post
+    </button>
+  </mat-toolbar>
+
+  <div class="posts-content mt-4">
+    <mat-card *ngIf="error">
+      <mat-card-content>
+        <p>{{ error }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card *ngIf="!(loading || error) && !posts?.length">
+      <mat-card-content>
+        <p>No posts found. Create your first post by clicking the "New Post" button.</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card *ngFor="let post of posts" class="mb-4">
+      <mat-card-header>
+        <mat-card-title>{{ post.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ truncateText(post.body) }}
+          <a mat-button routerLink="/posts/{{post.id}}" class="read-more">
+            Read More
+          </a>
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button routerLink="/posts/{{post.id}}" color="primary">
+          <mat-icon>visibility</mat-icon>
+          View
+        </button>
+        <button mat-button 
+          class="edit-button" 
+          [routerLink]="['/posts/create']" 
+          [queryParams]="{ postId: post.id }" 
+          color="primary"
+        >
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button mat-button (click)="deletePost(post)" color="warn">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="loading-indicator" *ngIf="loading">
+      <mat-spinner diameter="24"></mat-spinner>
+    </div>
+
+    <div class="load-more-container" *ngIf="hasMorePosts && !loading && posts.length > 0">
+      <button mat-raised-button color="primary" (click)="loadMorePosts()">
+        Load More
+      </button>
+    </div>
+
+  </div>

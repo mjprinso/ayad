@@ -1,0 +1,13 @@
+<div class="modal-container">
+  <h1 mat-dialog-title class="dialog-title">Delete Post</h1>
+  <div mat-dialog-content class="dialog-content">
+    <mat-icon class="warning-icon">warning</mat-icon>
+    <div class="message-container">
+      <p class="main-message">Are you sure you want to delete the post "{{post.title}}"?</p>
+    </div>
+  </div>
+  <div mat-dialog-actions class="button-container">
+    <button mat-stroked-button (click)="onCancel()" class="cancel-button">Cancel</button>
+    <button mat-raised-button color="warn" (click)="onConfirm()" class="delete-button">Delete</button>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <span class="toolbar-title">{{title}}</span>
+  <span class="spacer"></span>
+  <div class="toolbar-buttons">
+    <button mat-button routerLink="/posts">
+      <mat-icon>article</mat-icon>
+      Posts
+    </button>
+  </div>
+  <div class="flex-grow-1"></div>
+  <div class="toolbar-buttons">
+    <button mat-button routerLink="/posts/create">
+      <mat-icon>note_add</mat-icon>
+      Add Post
+    </button>
+    <button mat-button disabled matTooltip="{{isOnline ? 'Online' : 'Offline'}}" matTooltipPosition="above">
+      <mat-icon [ngClass]="{ 'online': isOnline, 'offline': !isOnline }">
+        {{ isOnline ? 'wifi' : 'signal_wifi_off' }}
+      </mat-icon>
+      <span [ngClass]="{ 'online': isOnline, 'offline': !isOnline }">
+        {{ isOnline ? 'Online' : 'Offline' }}
+      </span>
+    </button>
+  </div>
+</mat-toolbar>
+
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>

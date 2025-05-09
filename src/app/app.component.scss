@@ -1,0 +1,157 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  padding-top: 64px; /* Height of the fixed toolbar */
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.toolbar-title {
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.mat-toolbar {
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: linear-gradient(135deg, #6c5ce7, #a366ff);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  height: 64px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.toolbar-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.mat-toolbar button {
+  color: white;
+  min-width: 120px;
+  justify-content: flex-start;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.sync-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-left: 16px;
+  
+  mat-icon {
+    animation: rotate 2s linear infinite;
+    color: #fff;
+    font-size: 16px;
+  }
+  
+  .sync-text {
+    font-size: 12px;
+    color: #fff;
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.mat-toolbar button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.mat-icon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.mat-toolbar button.mat-toolbar {
+  background-color: #1976d2;
+  color: white;
+  padding: 0 16px;
+
+  .mat-icon {
+    margin-right: 8px;
+  }
+
+  .mat-button {
+    color: white;
+  }
+
+  .mat-menu-trigger {
+    margin-left: 8px;
+  }
+
+  .network-status {
+    margin-left: 8px;
+    
+    .mat-icon {
+      &.online {
+        color: #4caf50;
+      }
+      
+      &.offline {
+        color: #f44336;
+      }
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+  background-color: #f5f5f5;
+  margin-top: 16px; /* Reduced margin to compensate for enhanced spacing */
+  margin: 0 auto;
+  width: 100%;
+}
+
+.snackbar-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.mat-snackbar {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 4px;
+  padding: 12px 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 600px) {
+  .main-content {
+    padding: 16px;
+  }
+
+  .mat-toolbar button {
+    min-width: 80px;
+    padding: 6px 12px;
+  }
+}

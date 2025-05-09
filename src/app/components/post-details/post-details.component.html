@@ -1,0 +1,58 @@
+<div *ngIf="loading" class="loading-container">
+  <div class="loading-content">
+    <p>Loading post details...</p>
+    <mat-spinner diameter="24" />
+  </div>
+</div>
+
+<div *ngIf="postDetails" class="post-details">
+  <div class="back-button">
+    <a [routerLink]="['/posts']" class="button">← Back to Posts</a>
+  </div>
+  <div class="post-header">
+    <h1>{{ postDetails.post.title }}</h1>
+    <p class="author">By {{ postDetails.author?.name }}</p>
+  </div>
+
+  <div class="post-content">
+    <p>{{ postDetails.post.body }}</p>
+  </div>
+
+  <div class="comments-section">
+    <h2>Comments</h2>
+    <div *ngIf="postDetails && postDetails.comments && postDetails.comments.length === 0" class="no-comments">
+      No comments yet
+    </div>
+    <div *ngIf="postDetails && postDetails.comments && postDetails.comments.length > 0" class="comments-list">
+      <div *ngFor="let comment of postDetails.comments" class="comment">
+        <p class="comment-body">{{ comment.body }}</p>
+        <p class="comment-author">- {{ comment.name }} <i>({{ comment.email }})</i></p>
+      </div>
+    </div>
+    <div class="comment-form">
+      <form (submit)="addComment()" #commentForm="ngForm">
+        <div class="form-group small-input">
+          <label for="name">Name *</label>
+          <input id="name" type="text" [(ngModel)]="newComment.name" name="name" required #name="ngModel">
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error">
+            Name is required
+          </div>
+        </div>
+        <div class="form-group small-input">
+          <label for="email">Email *</label>
+          <input id="email" type="email" [(ngModel)]="newComment.email" name="email" required #email="ngModel">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
+            Valid email is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="body">Comment *</label>
+          <textarea id="body" [(ngModel)]="newComment.body" name="body" required #body="ngModel"></textarea>
+          <div *ngIf="body.invalid && (body.dirty || body.touched)" class="error">
+            Comment is required
+          </div>
+        </div>
+        <button type="submit" [disabled]="loading || !commentForm.form.valid">Add Comment</button>
+      </form>
+    </div>
+  </div>

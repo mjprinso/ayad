@@ -1,0 +1,58 @@
+.modal-container {
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+  
+  .dialog-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  .dialog-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    
+    .warning-icon {
+      color: #dc3545;
+      font-size: 24px;
+    }
+
+    .message-container {
+      flex: 1;
+    }
+
+    .main-message {
+      font-size: 16px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .warning-text {
+      color: #dc3545;
+      font-weight: 500;
+      font-size: 14px;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    width: 100%;
+    
+    .cancel-button {
+      text-transform: capitalize;
+      padding: 8px 24px;
+      min-width: 100px;
+    }
+
+    .delete-button {
+      text-transform: capitalize;
+      padding: 8px 24px;
+      min-width: 100px;
+    }
+  }
+}
