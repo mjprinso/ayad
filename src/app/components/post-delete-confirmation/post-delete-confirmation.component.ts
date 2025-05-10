@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Post } from '../../models/post';
+import { Post } from '../../models/post.model';
 
 @Component({
   selector: 'app-post-delete-confirmation',

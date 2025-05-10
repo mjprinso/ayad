@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { Post } from '../../models/post';
-import { ApiService } from '../../services/api.service';
-import { OfflineStorageService } from '../../services/offline-storage.service';
-import { SyncService } from '../../services/sync.service';
+import { Post } from '../../models/post.model';
+import { PostService } from '../../services/post.service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -22,15 +20,14 @@ import { SharedModule } from '../../shared/shared.module';
 export class PostCreateComponent implements OnInit {
   postForm: FormGroup;
   loading = false;
+  saving = false;
   error: string | null = null;
   isEditMode = false;
   postId: number | null = null;
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly apiService: ApiService,
-    private readonly offlineStorage: OfflineStorageService,
-    private readonly syncService: SyncService,
+    private readonly postService: PostService,
     private readonly router: Router,
     private readonly snackbarService: SnackbarService,
     private readonly route: ActivatedRoute
@@ -52,14 +49,12 @@ export class PostCreateComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    // Form is already initialized in constructor
-  }
+  ngOnInit(): void {}
 
   loadPostData(): void {
     if (this.postId) {
       this.loading = true;
-      this.apiService.getPost(this.postId).subscribe({
+      this.postService.getPostById(this.postId).subscribe({
         next: (post: Post | null) => {
           this.loading = false;
           if (post) {
@@ -83,18 +78,18 @@ export class PostCreateComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.saving = true;
     this.error = null;
 
     const post: Post = {
       title: this.postForm.get('title')?.value || '',
       body: this.postForm.get('body')?.value || '',
       userId: 1, // TODO: Get actual user ID
-      id: this.isEditMode ? this.postId : null
+      id: this.isEditMode ? Number(this.postId) : Number(`${new Date().getTime()}${Math.floor(Math.random() * 1000)}`),
     };
 
     if (this.isEditMode) {
-      this.apiService.updatePost(post).subscribe({
+      this.postService.updatePost(post).subscribe({
         next: (updatedPost: Post | null) => {
           if (updatedPost) {
             this.snackbarService.showSuccess('Post updated successfully', 3000);
@@ -107,7 +102,7 @@ export class PostCreateComponent implements OnInit {
         }
       });
     } else {
-      this.apiService.createPost(post).subscribe({
+      this.postService.createPost(post).subscribe({
         next: (newPost: Post | null) => {
           if (newPost) {
             this.snackbarService.showSuccess('Post created successfully', 3000);

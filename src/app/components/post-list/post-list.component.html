@@ -9,13 +9,7 @@
   </mat-toolbar>
 
   <div class="posts-content mt-4">
-    <mat-card *ngIf="error">
-      <mat-card-content>
-        <p>{{ error }}</p>
-      </mat-card-content>
-    </mat-card>
-
-    <mat-card *ngIf="!(loading || error) && !posts?.length">
+    <mat-card *ngIf="!loading && !posts?.length">
       <mat-card-content>
         <p>No posts found. Create your first post by clicking the "New Post" button.</p>
       </mat-card-content>
@@ -54,12 +48,12 @@
       </mat-card-actions>
     </mat-card>
 
-    <div class="loading-indicator" *ngIf="loading">
+    <div class="loading-indicator" *ngIf="loading || loadingMorePosts">
       <mat-spinner diameter="24"></mat-spinner>
     </div>
 
-    <div class="load-more-container" *ngIf="hasMorePosts && !loading && posts.length > 0">
-      <button mat-raised-button color="primary" (click)="loadMorePosts()">
+    <div class="load-more-container" *ngIf="hasMorePosts && !loading && !loadingMorePosts">
+      <button mat-raised-button color="primary" (click)="loadPosts(true)">
         Load More
       </button>
     </div>

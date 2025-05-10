@@ -20,10 +20,10 @@
 
   <div class="comments-section">
     <h2>Comments</h2>
-    <div *ngIf="postDetails && postDetails.comments && postDetails.comments.length === 0" class="no-comments">
+    <div *ngIf="!postDetails.comments.length" class="no-comments">
       No comments yet
     </div>
-    <div *ngIf="postDetails && postDetails.comments && postDetails.comments.length > 0" class="comments-list">
+    <div *ngIf="postDetails.comments.length" class="comments-list">
       <div *ngFor="let comment of postDetails.comments" class="comment">
         <p class="comment-body">{{ comment.body }}</p>
         <p class="comment-author">- {{ comment.name }} <i>({{ comment.email }})</i></p>

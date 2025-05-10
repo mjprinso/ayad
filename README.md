@@ -2,11 +2,14 @@
 
 A modern blog dashboard application built with Angular that supports offline functionality using IndexedDB.
 
+The app is hosted and can be viewed here: [Angular Blog Dashboard](https://mjprinso.github.io/ayad/)
+
 ## Tech Stack
 
 - **Frontend Framework**: Angular 17
 - **State Management**: RxJS
 - **Offline Storage**: IndexedDB
+- **Offline package**: ngx-indexed-db
 - **UI Components**: Angular Material
 - **API Integration**: JSONPlaceholder
 

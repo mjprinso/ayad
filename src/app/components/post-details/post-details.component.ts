@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Subject, takeUntil, map, filter, distinctUntilChanged } from 'rxjs';
-import { PostDetailsService } from '../../services/post-details.service';
 import { Comment } from '../../models/comment.model';
 import { PostDetails } from '../../models/post-details.model';
 import { SnackbarService } from '../../services/snackbar.service';
 import { SharedModule } from '../../shared/shared.module';
+import { PostService } from '../../services/post.service';
+import { CommentService } from '../../services/comment.service';
 
 interface NewComment {
   name: string;
@@ -33,9 +34,10 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly postDetailsService: PostDetailsService,
-    private readonly snackbarService: SnackbarService
-  ) {}
+    private readonly snackbarService: SnackbarService,
+    private readonly postService: PostService,
+    private readonly commentsService: CommentService
+  ) { }
 
   ngOnInit(): void {
     this.setupRouteSubscription();
@@ -59,23 +61,10 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
       )
       .subscribe(postId => {
         if (postId) {
-          this.fetchPostDetails(postId);
-        }
-      });
-  }
-
-  private fetchPostDetails(postId: string): void {
-    this.loading = true;
-    this.postDetailsService.getPostDetails(parseInt(postId))
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data) => {
-          this.postDetails = data;
-          this.loading = false;
-        },
-        error: (error) => {
-          this.snackbarService.showError('Failed to fetch post details', 3000);
-          this.loading = false;
+          this.postService.getPostDetails(parseInt(postId)).subscribe(data => {
+            this.postDetails = data;
+            this.loading = false;
+          });
         }
       });
   }
@@ -96,30 +85,31 @@ export class PostDetailsComponent implements OnInit, OnDestroy {
       email: this.newComment.email,
       body: this.newComment.body,
       postId: this.postDetails.post.id,
-      id: 0,
+      id: Number(`${new Date().getTime()}${Math.floor(Math.random() * 1000)}`),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       syncStatus: 'pending'
     };
 
     this.loading = true;
-    this.postDetailsService.addComment(this.postDetails.post.id, comment)
+    this.commentsService.addComment(comment)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (addedComment: Comment) => {
           if (this.postDetails) {
-            if (!this.postDetails.comments) {
+            if (!this.postDetails.comments?.length) {
               this.postDetails.comments = [];
             }
             this.postDetails.comments.push(addedComment);
           }
-          
+
+          // Reset the newComment form
           this.newComment = {
             name: '',
             email: '',
             body: ''
           };
-          
+
           this.snackbarService.showSuccess('Comment added successfully', 3000);
           this.loading = false;
         },
